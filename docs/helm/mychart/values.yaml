@@ -1,0 +1,86 @@
+version: 1.0.0
+
+metadata:
+  nameOverride: myproject-frontend
+  fullnameOverride: myproject-frontend-dev
+  namespaceOverride: myproject-frontend-namespace  # empty = uses the Release.Namespace
+  component: frontend
+
+
+image:
+  fullName: nexus.docker.registry/myproject-frontend
+  tag: 0.1.0  # stable
+  pullPolicy: IfNotPresent
+
+
+container:
+  portName: http
+  # protocol: TCP
+  port: 3000
+
+
+deployment:
+  replicaCount: 2
+
+
+service:
+  type: ClusterIP  # NodePort
+
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+      # nodePort: 30100
+
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 3000
+
+
+ingress:
+  enabled: true  # false
+  className: nginx
+  # rewriteTarget: "/"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+
+  rules:
+    # Frontend
+    - host: myproject.example.nip.io
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: ""  # empty => we take the chart service defined inside _helpers.tpl
+            portName: http
+            # portNumber: 80
+
+
+env:
+  # Frontend
+  prefix: "NEXT_PUBLIC_"
+  vars:
+    URL: "myproject.example.nip.io"
+    ENVIRONMENT: "production"
+
+  # Dev only
+  # FRONT_URL: "http://myproject-service"
+
+
+secrets:
+  nextauth_user: "my-user"
+  nextauth_password: "my-password"
+
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+    # nvidia.com/gpu: "1"
+    # nvidia.com/gpumem-percentage: 10
+  nodeSelector: nodename  # e.g. worker-node-01
