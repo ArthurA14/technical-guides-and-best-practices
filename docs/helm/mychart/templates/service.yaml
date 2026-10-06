@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "projectname.fullname" . }}-service
+  # namespace: {{ include "projectname.namespace" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "projectname.fullname" . }}-service
+    app.kubernetes.io/component: {{ include "projectname.component" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    # app: {{ include "projectname.fullname" . }}
+    app.kubernetes.io/name: {{ include "projectname.fullname" . }}
+  ports:
+    {{- range .Values.service.ports }}
+    - name: {{ .name }}
+      protocol: {{ .protocol | default "TCP" }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      {{- if .nodePort }}
+      nodePort: {{ .nodePort }}
+      {{- end }}
+    {{- end }}

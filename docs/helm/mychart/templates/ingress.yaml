@@ -1,0 +1,38 @@
+# {{- $root := . -}}
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "projectname.fullname" . }}-ingress
+  namespace: {{ include "projectname.namespace" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "projectname.fullname" . }}-ingress
+    app.kubernetes.io/component: ingress
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: {{ .Values.ingress.rewriteTarget | default "/" | quote }}
+  {{- with .Values.ingress.annotations }}
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className | default "nginx" }}
+  rules:
+    {{- range .Values.ingress.rules }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ default "/" .path | quote }}
+            pathType: {{ default "Prefix" .pathType }}
+            backend:
+              service:
+                # name: {{ include "projectname.fullname" . }}-service
+                name: {{ default (printf "%s-service" (include "projectname.fullname" $)) .service.name }}  # $ == $root
+                port:
+                  {{- if .service.portName }}
+                  name: {{ .service.portName | quote }}
+                  {{- else }}
+                  number: {{ .service.portNumber | int }}
+                  {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }}

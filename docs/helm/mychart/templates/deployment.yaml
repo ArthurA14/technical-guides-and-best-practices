@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "projectname.fullname" . }}-deployment
+  # namespace: {{ include "projectname.namespace" . }}
+  labels:
+    # app: {{ include "projectname.fullname" . }}
+    app.kubernetes.io/name: {{ include "projectname.fullname" . }}-deployment
+    app.kubernetes.io/component: {{ include "projectname.component" . }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      # app: {{ include "projectname.fullname" . }}
+      app.kubernetes.io/name: {{ include "projectname.fullname" . }}
+  template:
+    metadata:
+      labels:
+        # app: {{ include "projectname.fullname" . }}
+        app.kubernetes.io/name: {{ include "projectname.fullname" . }}
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: {{ .Values.resources.nodeSelector }}
+      containers:
+        - name: {{ include "projectname.name" . }}
+          image: "{{ .Values.image.fullName }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: {{ .Values.container.portName }}
+              # protocol: {{ .Values.container.protocol | default "TCP" }}
+              containerPort: {{ .Values.container.port }}
+          envFrom:
+            - secretRef:
+                name: {{ include "projectname.fullname" . }}-secret
+            - configMapRef:
+                name: {{ include "projectname.fullname" . }}-config
+              prefix: {{ .Values.env.prefix | quote }}
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.container.port }}
+            initialDelaySeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.container.port }}
+            initialDelaySeconds: 10
+
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

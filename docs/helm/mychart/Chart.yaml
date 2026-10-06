@@ -1,0 +1,9 @@
+apiVersion: v2
+name: myproject-frontend
+description: Next.js frontend Helm chart for My Project
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+# Optional
+icon: https://raw.githubusercontent.com/argoproj/argo-cd/master/docs/assets/argo.png

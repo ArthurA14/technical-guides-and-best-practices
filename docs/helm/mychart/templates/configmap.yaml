@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "projectname.fullname" . }}-config
+  namespace: {{ include "projectname.namespace" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "projectname.fullname" . }}-config
+    app.kubernetes.io/component: config
+data:
+{{- range $key, $value := .Values.env.vars }}
+  {{ $key }}: "{{ $value | quote }}"
+{{- end }}
