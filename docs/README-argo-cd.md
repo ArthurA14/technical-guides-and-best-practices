@@ -1132,7 +1132,7 @@ Ingress exposed on app-name-argocd.<CLUSTER_IP>.nip.io
 
 → Once the application has been successfully synchronized, the Argo CD UI should display a healthy and synchronized application, along with the deployed Kubernetes resources.
 
-![Argo CD application overview](Argo-UI.png)
+![Argo CD application overview](../images/Argo-UI.png)
 
-![Argo CD application topology view](Argo-UI-2.png)
+![Argo CD application topology view](../images/Argo-UI-2.png)
 
