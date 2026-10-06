@@ -1,0 +1,120 @@
+# OS metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100/
+.Trashes/
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editors and IDEs (local configuration)
+.vscode/
+.idea/
+.zed/
+.ropeproject/
+*.code-workspace
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Temporary files, backups and Office lock files
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+.~lock.*#
+~$*
+
+# Logs and process files
+*.log
+logs/
+*.pid
+*.pid.lock
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.envrc.local
+.netrc
+.pypirc
+.npmrc.local
+*.key
+*.p12
+*.pfx
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+# Cleartext credentials; retain encrypted SealedSecret manifests
+# Add other sensitive filenames explicitly when needed.
+gitlab-repo-secret.yaml
+kubeconfig
+kubeconfig.local
+.kube/
+
+# Python bytecode and native extensions
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python tooling, test and coverage caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+.tox/
+.nox/
+.hypothesis/
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Python package artifacts
+*.egg-info/
+*.egg
+.eggs/
+.python-version
+
+# Jupyter temporary files (retain notebooks)
+.ipynb_checkpoints/
+
+# Dependency folders and generated build output
+node_modules/
+bower_components/
+build/
+dist/
+coverage/
+.nyc_output/
+.parcel-cache/
+.next/
+.nuxt/
+.svelte-kit/
+
+# Generated documentation websites
+/site/
+/docs/_build/
+.jupyter_cache/
+
+# Keep source documents, images, PDFs, archives, notebooks,
+# YAML/JSON examples, lockfiles and shared project instructions tracked.
+# Do not add broad rules such as data*, lib/, *.zip or *.pdf.
